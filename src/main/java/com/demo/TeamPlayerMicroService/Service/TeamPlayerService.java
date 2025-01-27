@@ -24,130 +24,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-//
-//@Service
-//public class TeamPlayerService {
-//
-//    @Autowired
-//    private TeamPlayerRepository teamPlayerRepository;
-//
-//    @Autowired
-//    private WebClient.Builder webClientBuilder;
-//
-//    @Value("${team.service.url}")
-//    private String teamServiceUrl;
-//
-//    @Value("${player.service.url}")
-//    private String playerServiceUrl;
-//
-//    // Helper classes for response parsing
-//    @Data
-//    private static class TeamResponse {
-//        private Long id;
-//        private String name;
-//    }
-//
-//    @Data
-//    private static class PlayerResponse {
-//        private Long id;
-//        private String name;
-//        private Integer age;
-//        private String role;
-//        private String country;
-//    }
-//
-//    public List<TeamPlayerResponseDTO> getAllTeamPlayers() {
-//        List<TeamPlayer> teamPlayers = teamPlayerRepository.findAll();
-//        return teamPlayers.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
-//    }
-//
-//    public TeamPlayerResponseDTO getTeamPlayerById(Long id) {
-//        TeamPlayer teamPlayer = teamPlayerRepository.findById(id).orElse(null);
-//        return teamPlayer != null ? convertToResponseDTO(teamPlayer) : null;
-//    }
-//
-//    public TeamPlayerResponseDTO createTeamPlayer(TeamPlayerRequestDTO requestDTO) {
-//        TeamPlayer teamPlayer = new TeamPlayer();
-//        teamPlayer.setTeamId(requestDTO.getTeamId());
-//        teamPlayer.setPlayerId(requestDTO.getPlayerId());
-//        teamPlayer.setPlayerRuns(requestDTO.getPlayerRuns());
-//        teamPlayer.setPlayerWickets(requestDTO.getPlayerWickets());
-//        teamPlayer.setPlayerCatches(requestDTO.getPlayerCatches());
-//        teamPlayer.setBallsFacedByBatsman(requestDTO.getBallsFacedByBatsman());
-//        teamPlayer.setRunsConcededByBowler(requestDTO.getRunsConcededByBowler());
-//        TeamPlayer savedTeamPlayer = teamPlayerRepository.save(teamPlayer);
-//        return convertToResponseDTO(savedTeamPlayer);
-//    }
-//
-//    public TeamPlayerResponseDTO updateTeamPlayer(Long id, TeamPlayerRequestDTO requestDTO) {
-//        TeamPlayer teamPlayer = teamPlayerRepository.findById(id).orElse(null);
-//        if (teamPlayer != null) {
-//            teamPlayer.setTeamId(requestDTO.getTeamId());
-//            teamPlayer.setPlayerId(requestDTO.getPlayerId());
-//            teamPlayer.setPlayerRuns(requestDTO.getPlayerRuns());
-//            teamPlayer.setPlayerWickets(requestDTO.getPlayerWickets());
-//            teamPlayer.setPlayerCatches(requestDTO.getPlayerCatches());
-//            teamPlayer.setBallsFacedByBatsman(requestDTO.getBallsFacedByBatsman());
-//            teamPlayer.setRunsConcededByBowler(requestDTO.getRunsConcededByBowler());
-//            TeamPlayer updatedTeamPlayer = teamPlayerRepository.save(teamPlayer);
-//            return convertToResponseDTO(updatedTeamPlayer);
-//        }
-//        return null;
-//    }
-//
-//    public void deleteTeamPlayer(Long id) {
-//        teamPlayerRepository.deleteById(id);
-//    }
-//
-//    public TeamPlayer findByPlayerId(Long playerId) {
-//        return teamPlayerRepository.findByPlayerId(playerId);
-//    }
-//
-//    private String getTeamName(Long teamId) {
-//        try {
-//            TeamResponse teamResponse = webClientBuilder.build()
-//                    .get()
-//                    .uri(teamServiceUrl + "/" + teamId)
-//                    .retrieve()
-//                    .bodyToMono(TeamResponse.class)
-//                    .block();
-//            return teamResponse != null ? teamResponse.getName() : "Team Not Found";
-//        } catch (Exception e) {
-//            System.err.println("Error fetching team: " + e.getMessage());
-//            return "Team Not Found";
-//        }
-//    }
-//
-//    private String getPlayerName(Long playerId) {
-//        try {
-//            PlayerResponse playerResponse = webClientBuilder.build()
-//                    .get()
-//                    .uri(playerServiceUrl + "/" + playerId)
-//                    .retrieve()
-//                    .bodyToMono(PlayerResponse.class)
-//                    .block();
-//            return playerResponse != null ? playerResponse.getName() : "Player Not Found";
-//        } catch (Exception e) {
-//            System.err.println("Error fetching player: " + e.getMessage());
-//            return "Player Not Found";
-//        }
-//    }
-//
-//    private TeamPlayerResponseDTO convertToResponseDTO(TeamPlayer teamPlayer) {
-//        TeamPlayerResponseDTO responseDTO = new TeamPlayerResponseDTO();
-//        responseDTO.setId(teamPlayer.getId());
-//        responseDTO.setTeamId(teamPlayer.getTeamId());
-//        responseDTO.setTeamName(getTeamName(teamPlayer.getTeamId()));
-//        responseDTO.setPlayerId(teamPlayer.getPlayerId());
-//        responseDTO.setPlayerName(getPlayerName(teamPlayer.getPlayerId()));
-//        responseDTO.setPlayerRuns(teamPlayer.getPlayerRuns());
-//        responseDTO.setPlayerWickets(teamPlayer.getPlayerWickets());
-//        responseDTO.setPlayerCatches(teamPlayer.getPlayerCatches());
-//        responseDTO.setBallsFacedByBatsman(teamPlayer.getBallsFacedByBatsman());
-//        responseDTO.setRunsConcededByBowler(teamPlayer.getRunsConcededByBowler());
-//        return responseDTO;
-//    }
-//}
+
 
 @Service
 @Slf4j
@@ -348,38 +225,6 @@ public class TeamPlayerService {
         }
     }
 
-    public String getPlayerName(Long playerId) {
-        try {
-            log.info("Fetching player details for playerId: {}", playerId);
-
-            // Use the correct URL format with direct URL
-            String fullUrl = String.format("http://localhost:1818/api/players/%d", playerId);
-            log.info("Making request to player service: {}", fullUrl);
-
-            ResponseEntity<PlayerResponseDTO> response = webClientBuilder.build()
-                    .get()
-                    .uri(fullUrl)
-                    .retrieve()
-                    .toEntity(PlayerResponseDTO.class)
-                    .block();
-
-            if (response != null && response.getBody() != null && response.getBody().getName() != null) {
-                String playerName = response.getBody().getName();
-                log.info("Successfully found player: {}", playerName);
-                return playerName;
-            }
-
-            log.warn("No player found for id: {}", playerId);
-            return "Player Not Found";
-
-        } catch (WebClientResponseException.NotFound e) {
-            log.warn("Player not found with id: {}", playerId);
-            return "Player Not Found";
-        } catch (Exception e) {
-            log.error("Error fetching player name for playerId {}: {}", playerId, e.getMessage(), e);
-            return "Player Not Found";
-        }
-    }
 
     // Update PlayerResponseDTO to match exactly with Player service response
     @Data
@@ -454,6 +299,34 @@ public class TeamPlayerService {
         private String name;
         private Long managerId;
         private Long captainId;
+    }
+    public String getPlayerName(Long playerId) {
+        try {
+            log.info("Fetching player name for ID: {}", playerId);
+            String url = playerServiceUrl + "/" + playerId;
+            log.debug("Making request to: {}", url);
+
+            PlayerResponseDTO response = webClientBuilder.build()
+                    .get()
+                    .uri(url)
+                    .retrieve()
+                    .bodyToMono(PlayerResponseDTO.class)
+                    .block();
+
+            if (response != null && response.getName() != null) {
+                log.info("Found player name: {} for ID: {}", response.getName(), playerId);
+                return response.getName();
+            } else {
+                log.warn("No player name found for ID: {}", playerId);
+                return "Unknown Player";
+            }
+        } catch (WebClientResponseException.NotFound e) {
+            log.warn("Player not found with ID: {}", playerId);
+            return "Unknown Player";
+        } catch (Exception e) {
+            log.error("Error fetching player name for ID {}: {}", playerId, e.getMessage());
+            return "Unknown Player";
+        }
     }
 }
 
