@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class TeamPlayerRequestDTO {
-    private Long teamId; // Refers to Team ID
-    private Long playerId; // Refers to Player ID
-    private Integer playerRuns;
-    private Integer playerWickets;
-    private Integer playerCatches;
-    private Integer ballsFacedByBatsman;
-    private Integer runsConcededByBowler;
+    private int teamId; // Refers to Team ID
+    private int playerId; // Refers to Player ID
+    private int playerRuns;
+    private int playerWickets;
+    private int playerCatches;
+    private int ballsFacedByBatsman;
+    private int runsConcededByBowler;
 }
