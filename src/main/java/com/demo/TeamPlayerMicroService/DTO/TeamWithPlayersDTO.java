@@ -6,9 +6,9 @@ import java.util.List;
 
 @Data
 public class TeamWithPlayersDTO {
-    private Long id;
+    private int id;
     private String name;
-    private Long managerId;
-    private Long captainId;
+    private int managerId;
+    private int captainId;
     private List<TeamPlayerDTO> players;
 }

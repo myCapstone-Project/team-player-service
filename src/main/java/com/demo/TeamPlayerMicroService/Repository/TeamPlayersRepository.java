@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamPlayerRepository extends JpaRepository<TeamPlayer, Long> {
-    List<TeamPlayer> findByTeamId(Long teamId);
-    TeamPlayer findByPlayerId(Long playerId);
+public interface TeamPlayersRepository extends JpaRepository<TeamPlayer, Integer> {
 }

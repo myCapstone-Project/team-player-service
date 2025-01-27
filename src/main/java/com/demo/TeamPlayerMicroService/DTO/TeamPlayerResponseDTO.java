@@ -4,14 +4,14 @@ import lombok.Data;
 
 @Data
 public class TeamPlayerResponseDTO {
-    private Long id;
-    private Long teamId;
+    private int id;
+    private int teamId;
     private String teamName; // Fetched from Team Microservice
-    private Long playerId;
+    private int playerId;
     private String playerName; // Fetched from Player Microservice
-    private Integer playerRuns;
-    private Integer playerWickets;
-    private Integer playerCatches;
-    private Integer ballsFacedByBatsman;
-    private Integer runsConcededByBowler;
+    private int playerRuns;
+    private int playerWickets;
+    private int playerCatches;
+    private int ballsFacedByBatsman;
+    private int runsConcededByBowler;
 }
