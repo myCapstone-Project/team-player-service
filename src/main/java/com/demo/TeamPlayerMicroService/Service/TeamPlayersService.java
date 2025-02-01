@@ -21,6 +21,11 @@ public class TeamPlayersService {
         return teamPlayersRepository.save(teamPlayer);
     }
 
+    public List<TeamPlayer> getAllPlayersByTeamId(int teamId){
+        List<TeamPlayer> teamPlayers=teamPlayersRepository.findByTeamId(teamId).orElse(null);
+        return teamPlayers;
+    }
+
     // Get all TeamPlayers
     public List<TeamPlayer> getAllTeamPlayers() {
         return teamPlayersRepository.findAll();
