@@ -3,7 +3,9 @@ package com.cricket.team_player_service.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +19,14 @@ import com.cricket.team_player_service.entity.TeamPlayer;
 import com.cricket.team_player_service.service.TeamPlayersService;
 
 import lombok.extern.slf4j.Slf4j;
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/team-players")
 	public class TeamPlayerController {
 
 	    @Autowired
 	    private TeamPlayersService teamPlayersService;
+	    
 
 	    @GetMapping("/matches/{playerId}")
 	    public ResponseEntity<List<MatchResponseDTO>> getPlayerMatches(@PathVariable int playerId) {
@@ -36,6 +40,12 @@ import lombok.extern.slf4j.Slf4j;
 	        TeamPlayer savedTeamPlayer = teamPlayersService.saveTeamPlayer(teamPlayer);
 	        return ResponseEntity.ok(savedTeamPlayer);
 	    }
+
+		//Get all team players by teamId
+		@GetMapping("/team/{teamId}")
+		public ResponseEntity<List<TeamPlayer>> getAllPlayersByTeamId(@PathVariable int teamId){
+			return new ResponseEntity<List<TeamPlayer>>(teamPlayersService.getAllPlayersByTeamId(teamId),HttpStatus.OK);
+		}
 
 	    // Get all TeamPlayers
 	    @GetMapping
