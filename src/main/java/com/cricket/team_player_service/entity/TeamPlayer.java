@@ -1,5 +1,4 @@
-package com.demo.TeamPlayerMicroService.Entity;
-
+package com.cricket.team_player_service.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "team_players")
+@Table(name = "team_player_details")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +37,7 @@ public class TeamPlayer {
     @Column(name = "player_catches")
     private int playerCatches;
 
+   
 
 
-	}
+}
